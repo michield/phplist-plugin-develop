@@ -35,8 +35,8 @@ class debugaid extends phplistPlugin {
     'sanitise' => 'Sanitise the database'
   );
 
-  function debugaid() {
-    parent::phplistplugin();
+  function __construct() {
+    parent::__construct();
     $this->coderoot = dirname(__FILE__).'/devaids/';
   }
   
