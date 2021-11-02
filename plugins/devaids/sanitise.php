@@ -16,7 +16,7 @@ function output($message)
 }
 
 $footer = '--
-  
+
     <div class="footer" style="text-align:left; font-size: 75%;">
       <p>This message was sent to [EMAIL] by [FROMEMAIL]</p>
       <p>To forward this message, please do not use the forward button of your email application, because this message was made specifically for you only. Instead use the <a href="[FORWARDURL]">forward page</a> in our newsletter system.<br/>
@@ -34,11 +34,11 @@ output('Sanitising USER Uniqid and UUID');
 Sql_Query(sprintf('update %s set uniqid = sha2(uniqid, 256), uuid = "", foreignkey = ""',$GLOBALS['tables']['user']));
 
 output(s('Sanitise Campaign'));
-Sql_Query(sprintf('update %s set uuid = "", 
-    fromfield = "From Field <sanitised@phplist-testing.com>", 
-    message = concat("Test Campaign Content",id), 
-    textmessage = concat("Test Text Campaign",id), 
-    subject = concat("Test Campaign Subject",id), 
+Sql_Query(sprintf('update %s set uuid = "",
+    fromfield = "From Field <sanitised@phplist-testing.com>",
+    message = concat("Test Campaign Content",id),
+    textmessage = concat("Test Text Campaign",id),
+    subject = concat("Test Campaign Subject",id),
     footer = "%s"',
     $GLOBALS['tables']['message'], sql_escape($footer)));
 Sql_Query(sprintf('delete from %s where name in ("notify_start","notify_end","followupto","sendurl", "testtarget")',$GLOBALS['tables']['messagedata']));
@@ -60,13 +60,13 @@ output('Sanitising Admins');
 Sql_Query(sprintf('delete from %s where loginname != "admin"', $GLOBALS['tables']['admin']));
 
 output('Sanitising blacklisted email addresses');
-Sql_Query(sprintf('update %s bl join %s bld on bl.email = bld.email join %s u on bl.email = u.email 
+Sql_Query(sprintf('update %s bl join %s bld on bl.email = bld.email join %s u on bl.email = u.email
   set u.email = concat("sanitised+",substr(md5(u.email),1,15), "@blacklistedemail.phplist.com"),
-      bl.email = concat("sanitised+",substr(md5(u.email),1,15), "@blacklistedemail.phplist.com"), 
+      bl.email = concat("sanitised+",substr(md5(u.email),1,15), "@blacklistedemail.phplist.com"),
       bld.email = concat("sanitised+",substr(md5(u.email),1,15), "@blacklistedemail.phplist.com")',$GLOBALS['tables']['user_blacklist'],$GLOBALS['tables']['user_blacklist_data'],$GLOBALS['tables']['user']));
 
 Sql_Query(sprintf('update %s bl join %s bld on bl.email = bld.email
-  set bl.email = concat("sanitised+",substr(md5(bl.email),1,15), "@blacklistedemail.phplist.com"), 
+  set bl.email = concat("sanitised+",substr(md5(bl.email),1,15), "@blacklistedemail.phplist.com"),
       bld.email = concat("sanitised+",substr(md5(bl.email),1,15), "@blacklistedemail.phplist.com") where bl.email not like "sanitised%%"',$GLOBALS['tables']['user_blacklist'],$GLOBALS['tables']['user_blacklist_data'],$GLOBALS['tables']['user']));
 
 ## obfusscate those with few emais per domain
@@ -147,7 +147,6 @@ Sql_Query(sprintf('update %s set ip = "127.0.0.1",detail = "https://sanitised-ur
 HTTP_REFERER = https://sanitised-urls.phplist.com/lists/admin/
 REMOTE_ADDR = 127.0.1.2
 REQUEST_URI = /lists/admin/?page=pageaction&action=import2"',$GLOBALS['tables']['user_history']));
-
 
 output('Wiping config');
 Sql_Query(sprintf('delete from %s where item in ("xormask","hmackey","%s")',$GLOBALS['tables']['config'],join('","',array_keys($default_config))));
