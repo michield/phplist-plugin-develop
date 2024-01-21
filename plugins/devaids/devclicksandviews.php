@@ -4,7 +4,7 @@
 #var_dump($tables);
 @ob_end_flush();
 
-$count = array();
+$count = array('viewed' => 0);
 
 $req = Sql_Query(sprintf('select * from %s where viewed is null and status = "sent"',
   $tables['usermessage']));

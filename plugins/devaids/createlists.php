@@ -13,7 +13,7 @@ $pref = substr(md5(time()),0,10);
 for ($i = 1; $i <= $max; $i++) {
   Sql_Query(sprintf('insert into %s (name,description,entered,listorder,modified,active,owner,category)
     values("Test list %s","Test List %s",now(),%d,now(),1,"%s","%s")',
-    $tables['list'],$pref.$i,$pref.$i,$i,$_SESSION['logindetails']['adminname'],'Category '.substr($i,0,1)));
+    $tables['list'],$pref.$i,$pref.$i,$i,$_SESSION['logindetails']['id'],'Category '.substr($i,0,1)));
   $listid = Sql_Insert_Id();
 
   ## add a random number of subscribers
